@@ -18,6 +18,12 @@ from datetime import datetime
 from flask_admin.base import BaseView, expose
 from flask_admin.menu import MenuLink
 
+
 Admin_ = Blueprint('admin', __name__)
 #current_app.config["UPLOAD_FOLDER"] = 
 #excel.init_excel(current_app)
+
+db = SQLAlchemy()
+def admin_db(app):
+    db.init_app(app)
+    app.db = db
