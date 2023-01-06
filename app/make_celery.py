@@ -1,3 +1,4 @@
+
 from celery import Celery
 
 def make_celery(app):
@@ -18,4 +19,5 @@ flask_app.config.update(CELERY_CONFIG={
     'result_backend': 'redis://localhost:6379',
 })
 celery = make_celery(flask_app)
+
 '''
