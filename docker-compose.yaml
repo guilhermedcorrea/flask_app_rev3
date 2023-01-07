@@ -1,0 +1,37 @@
+version: "3.3"
+
+services:
+  pg_tasks:
+    image: postgres:15
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGES_DB=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - dockercompose
+  backend:
+    depends_on:
+      - postgres
+    image: flaskapp
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app:/usr/src/app/app
+      - ./migrations:/usr/src/app/migrations
+    restart: always
+    
+    networks:
+      - dockercompose
+
+  nginx:
+    container_name: proxy
+    restart: always
+    build: ./proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - flaskapp
+
+networks:
+  dockercompose:
