@@ -1,12 +1,15 @@
-FROM python:3 as python-base
-COPY requirements.txt .
-RUN pip3 install -r requirements.txt
-
-FROM python:3
-COPY --from=python-base /root/.cache /root/.cache
-COPY . /app
+FROM python:3-alpine
+RUN apk add --virtual .build-dependencies \
+            --no-cache \
+            python3-dev \
+            build-base \
+            linux-headers \
+            pcre-dev
+RUN apk add --no-cache pcre
 WORKDIR /app
-RUN pip3 install -r requirements.txt && rm -rf /root/.cache
-
-CMD gunicorn wsgi:application -b 0.0.0.0:8080
-EXPOSE 8080
+COPY /app /app
+COPY ./requirements.txt /app
+RUN pip install -r /app/requirements.txt
+RUN apk del .build-dependencies && rm -rf /var/cache/apk/*
+EXPOSE 5000
+CMD ["uwsgi", "--ini", "/app/wsgi.ini"]

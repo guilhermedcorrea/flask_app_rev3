@@ -1,10 +1,44 @@
+from __future__ import annotations
+
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
 def geofusion_db(app):
     db.init_app(app)
     app.db = db
 
+
+class Municipios(db.Model):
+    __tablename__ = "Municipio"
+    __bind_key__ = 'geofusion'
+    __table_args__ = {"schema": "enderecos"}
+    idmunicipio = db.Column(db.Integer, primary_key=True)
+    municipio = db.Column(db.String)
+    datacadastro = db.Column(db.Integer)
+    dataalterado = db.Column(db.DateTime, unique=False, nullable=False)
+    bitativo = db.Column(db.Boolean, nullable=False)
+
+    def __repr__(self):
+        return '<Municipios %r>' % self.municipio
+
+
+class Estados(db.Model):
+    __tablename__ = "Estado"
+    __bind_key__ = 'geofusion'
+    __table_args__ = {"schema": "enderecos"}
+    idestado = db.Column(db.Integer, primary_key=True)
+    estado = db.Column(db.String)
+    datacadastro = db.Column(db.DateTime, unique=False, nullable=False)
+    dataalterado = db.Column(db.DateTime, unique=False, nullable=False)
+    bitativo = db.Column(db.Boolean, nullable=False)
+
+
+ 
+
+    def __repr__(self):
+        return '<Estados %r>' % self.estado
 
 class Enderecos(db.Model):
     __tablename__ = "Endereco"
@@ -26,32 +60,14 @@ class Enderecos(db.Model):
     bairro = db.Column(db.String)
     municipio = db.Column(db.String)
     estado = db.Column(db.String)
-    idestado = db.Column(db.Integer)
     idmunicipio = db.Column(db.Integer)
+    idestado = db.Column(db.Integer)
 
+   
+    
 
-class Estados(db.Model):
-    __tablename__ = "Estado"
-    __bind_key__ = 'geofusion'
-    __table_args__ = {"schema": "enderecos"}
-    idestado = db.Column(db.Integer, primary_key=True)
-    estado = db.Column(db.String)
-    datacadastro = db.Column(db.DateTime, unique=False, nullable=False)
-    dataalterado = db.Column(db.DateTime, unique=False, nullable=False)
-    bitativo = db.Column(db.Boolean, nullable=False)
-
-class Municipios(db.Model):
-    __tablename__ = "Municipio"
-    __bind_key__ = 'geofusion'
-    __table_args__ = {"schema": "enderecos"}
-    idmunicipio = db.Column(db.Integer, primary_key=True)
-    municipio = db.Column(db.String)
-    datacadastro = db.Column(db.Integer)
-    dataalterado = db.Column(db.DateTime, unique=False, nullable=False)
-    bitativo = db.Column(db.Boolean, nullable=False)
-
-
-
+    def __repr__(self):
+        return '<Enderecos %r>' % self.idendereco
 
 
 

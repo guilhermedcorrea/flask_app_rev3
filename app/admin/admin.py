@@ -17,6 +17,7 @@ import flask_excel as excel
 from datetime import datetime
 from flask_admin.base import BaseView, expose
 from flask_admin.menu import MenuLink
+
 from ..models.geofusion import Enderecos, Estados, Municipios
 
 Admin_ = Blueprint('adm', __name__)
